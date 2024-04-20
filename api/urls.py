@@ -13,7 +13,7 @@ urlpatterns = [
     path("add_ordonance/<uuid:id>/", views.add_ordonance, name="add-ordonance"),
     path("ordonances/<uuid:pk>/" , views.get_patient_ordonances ,name="patient-ordonances" ),    
 
-
+    #CRUD
     path('maladies/', views.MaladieListCreateAPIView.as_view(), name='maladie-list-create'),
     path('maladies/<uuid:pk>/', views.MaladieRetrieveUpdateDestroyAPIView.as_view(), name='maladie-detail'),
     path('medicaments/', views.MedicamentListCreateAPIView.as_view(), name='medicament-list-create'),

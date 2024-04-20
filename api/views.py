@@ -22,7 +22,7 @@ def register(request):
     if request.method == 'POST':
         try:
             role = request.data.pop("role")
-            serializer = PatientSerializer(data=request.data) if role == "P" else (DoctorSerializer(data=request.data) if role == "D" else HoptialSerializer(data=request.data))
+            serializer = PatientSerializer(data=request.data) if role == "P" else (DoctorSerializer(data=request.data) if role == "D" else HospitalSerializer(data=request.data))
         except KeyError:
             return Response("Please pass the role : D for Doctor P for Patient ...", status=status.HTTP_400_BAD_REQUEST)
 
@@ -130,11 +130,11 @@ def get_doctors(request):
     if request.method == "GET":
         hospital = Hospital.objects.get(id=request.user.id)
         doctors = hospital.doctors.all()
-        serializer = DoctorSerializer(instance=doctors,many=True)
+        serializer = DoctorInfoSerializer(instance=doctors,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     if request.method == "POST":
-        serializer = DoctorSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
+        doctor_id = request.data["id"]
+        doctor = Doctor.objects.get(id=doctor_id)
+        doctor.hospitals.add(request.user.id) 
+        doctor.save()
+        return Response(f"{doctor} Added to your hospital",status= status.HTTP_400_BAD_REQUEST)

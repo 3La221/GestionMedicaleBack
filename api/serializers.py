@@ -26,7 +26,7 @@ class PatientDetailsSerializer(ModelSerializer):
 class PatientInfoSerializer(ModelSerializer):
     class Meta:
         model = Patient
-        fields = ['id', 'carte_id', 'birth_date', 'numero_tel', 'blood_type', 'gender', 'emergency_numbers', 'married', 'maladies']
+        fields = ['id','first_name','last_name' ,'carte_id', 'birth_date', 'numero_tel', 'blood_type', 'gender', 'emergency_numbers', 'married', 'maladies']
 
 class DoctorSerializer(ModelSerializer):
     class Meta:
@@ -37,13 +37,22 @@ class DoctorSerializer(ModelSerializer):
         user =  Doctor.objects.create_user(**validated_data)
         return user
 
+
+class DoctorInfoSerializer(ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields =['id','specialite','first_name','last_name']
+
+    def create(self, validated_data):
+        user =  Doctor.objects.create_user(**validated_data)
+        return user
 class HospitalSerializer(ModelSerializer):
     class Meta:
         model = Hospital
         fields = '__all__'
 
     def create(self, validated_data):
-        user = Profile.objects.create_user(**validated_data)
+        user = Hospital.objects.create_user(**validated_data)
         return user
 
 class MedicamentDetailsSerializer(ModelSerializer):
