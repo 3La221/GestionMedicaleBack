@@ -8,12 +8,12 @@ from .enums import *
 
 class Profile(AbstractUser):
     username = None
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     address = models.CharField(max_length=100, blank=True, null=True)
 
     
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "id"
     
     PASSWORD_FIELD = 'password'
 
@@ -29,9 +29,9 @@ class Patient(Profile):
     numero_tel = models.CharField(max_length=20, blank=True, null=True)
     blood_type = models.CharField(max_length=3, choices=[(tag.value, tag.name) for tag in BloodType],null=True , blank = True)
     gender = models.CharField(max_length=10, choices=[(tag.value, tag.name) for tag in Gender],null=True , blank = True)
-    emergency_numbers = models.JSONField(default=list , null = True , blank = True)  
+    emergency_number = models.CharField(max_length=20, blank=True, null=True)
     married = models.BooleanField(default=False)  
-    maladies = models.ManyToManyField("Maladie",null=True,blank=True)
+    maladies = models.ManyToManyField("Maladie",blank=True)
     REQUIRED_FIELDS = ["carte_id"]
 
     class Meta:
@@ -44,7 +44,7 @@ class Patient(Profile):
 class Doctor(Profile):
     carte_id = models.CharField(max_length=255, unique=True)
     specialite = models.CharField(max_length=50, choices=[(tag.name, tag.value) for tag in Specialite] , default = Specialite.AUTRE)
-    hospitals = models.ManyToManyField("Hospital",related_name="doctors",null=True , blank=True)
+    hospitals = models.ManyToManyField("Hospital",related_name="doctors" , blank=True)
     class Meta:
         verbose_name = "Doctor"
         verbose_name_plural = "Doctors"

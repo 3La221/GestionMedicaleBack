@@ -39,12 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',
     
+    "corsheaders",
+
+    
     'rest_framework_swagger',
     'rest_framework',
     'api.apps.ApiConfig'
 
 ]
 
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 REST_FRAMEWORK = {
@@ -54,6 +59,7 @@ REST_FRAMEWORK = {
 
 }
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
